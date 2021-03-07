@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import "./app.scss";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import React, { Component } from "react";
+import { Container, Row, Col } from "react-bootstrap";
+
+import { Member } from "./components/member";
+
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      members: [],
+    };
+  }
+
+  componentDidMount() {
+    fetch("https://door-293802.wm.r.appspot.com/")
+      .then((r) => r.json())
+      .then((data) => {
+        this.setState({ members: data });
+      });
+  }
+
+  render() {
+    return (
+      <Container>
+        <Row>
+          {this.state.members.map((data) => (
+            <Col xs={12} className="mb-5" key={`${data.key}`}>
+              <Member data={data} />
+            </Col>
+          ))}
+        </Row>
+      </Container>
+    );
+  }
 }
-
-export default App;
