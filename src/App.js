@@ -2,9 +2,11 @@ import "./app.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import React, { Component } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Toast } from "react-bootstrap";
 
 import { Member } from "./components/member";
+import { AddMember } from "./components/AddMember";
+import { Confirmation } from "./components/Confirmation";
 
 export default class App extends Component {
   constructor(props) {
@@ -12,8 +14,13 @@ export default class App extends Component {
 
     this.state = {
       members: [],
+      show: false,
     };
   }
+
+  setShow = (show) => {
+    this.setState({ show });
+  };
 
   componentDidMount() {
     fetch("https://door-293802.wm.r.appspot.com/")
@@ -23,17 +30,48 @@ export default class App extends Component {
       });
   }
 
+  onNewMember = (member, header, body) => {
+    this.setState((prevState) => ({
+      members: [...prevState.members, member],
+      toastH: header,
+      toastB: body,
+    }));
+
+    this.setShow(true);
+  };
+
+  onUpdateMember = (header, body) => {
+    this.setState({
+      toastH: header,
+      toastB: body,
+    });
+
+    this.setShow(true);
+  };
+
   render() {
     return (
-      <Container>
-        <Row>
-          {this.state.members.map((data) => (
-            <Col xs={12} className="mb-5" key={`${data.key}`}>
-              <Member data={data} />
+      <>
+        {this.state.show && (
+          <Confirmation
+            header={this.state.toastH}
+            body={this.state.toastB}
+            toggle={this.setShow}
+          />
+        )}
+        <Container>
+          <Row>
+            <Col xs={12} className="mb-5" key={0}>
+              <AddMember onNewMember={this.onNewMember} />
             </Col>
-          ))}
-        </Row>
-      </Container>
+            {this.state.members.map((data) => (
+              <Col xs={12} className="mb-5" key={`${data.key}`}>
+                <Member data={data} onUpdateMember={this.onUpdateMember} />
+              </Col>
+            ))}
+          </Row>
+        </Container>
+      </>
     );
   }
 }
