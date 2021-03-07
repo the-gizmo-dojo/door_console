@@ -57,7 +57,6 @@ export class Member extends Component {
     const edit = { ...this.state.edit };
     const oldFob = this.state.data.fob;
     let url = `https://door-293802.wm.r.appspot.com/members/${oldFob}`;
-    // url = `http://localhost:8080/members/${oldFob}`
     fetch(url, {
       method: "put",
       headers: {

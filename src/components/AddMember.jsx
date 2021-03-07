@@ -60,7 +60,7 @@ export class AddMember extends Component {
       .then((d) => {
         this.props.onNewMember(
           edit,
-          `done adding new member: ${d.first} ${d.last}`,
+          `done adding new member: ${d.data.first} ${d.data.last}`,
           "✅"
         );
       });
