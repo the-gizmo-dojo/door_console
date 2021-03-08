@@ -2,11 +2,13 @@ import "./app.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import React, { Component } from "react";
-import { Container, Row, Col, Toast } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import { Member } from "./components/member";
 import { AddMember } from "./components/AddMember";
 import { Confirmation } from "./components/Confirmation";
+import { Login } from "./components/Login";
 
 export default class App extends Component {
   constructor(props) {
@@ -51,27 +53,34 @@ export default class App extends Component {
 
   render() {
     return (
-      <>
-        {this.state.show && (
-          <Confirmation
-            header={this.state.toastH}
-            body={this.state.toastB}
-            toggle={this.setShow}
-          />
-        )}
-        <Container>
-          <Row>
-            <Col xs={12} className="mb-5" key={0}>
-              <AddMember onNewMember={this.onNewMember} />
-            </Col>
-            {this.state.members.map((data) => (
-              <Col xs={12} className="mb-5" key={`${data.key}`}>
-                <Member data={data} onUpdateMember={this.onUpdateMember} />
-              </Col>
-            ))}
-          </Row>
-        </Container>
-      </>
+      <Router>
+        <Switch>
+          <Route path="/members">
+            {this.state.show && (
+              <Confirmation
+                header={this.state.toastH}
+                body={this.state.toastB}
+                toggle={this.setShow}
+              />
+            )}
+            <Container>
+              <Row>
+                <Col xs={12} className="mb-5" key={0}>
+                  <AddMember onNewMember={this.onNewMember} />
+                </Col>
+                {this.state.members.map((data) => (
+                  <Col xs={12} className="mb-5" key={`${data.key}`}>
+                    <Member data={data} onUpdateMember={this.onUpdateMember} />
+                  </Col>
+                ))}
+              </Row>
+            </Container>
+          </Route>
+          <Route path="/">
+            <Login />
+          </Route>
+        </Switch>
+      </Router>
     );
   }
 }

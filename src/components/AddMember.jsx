@@ -1,14 +1,6 @@
 import React, { Component } from "react";
 
-import {
-  Card,
-  Badge,
-  Button,
-  Row,
-  Col,
-  Form,
-  InputGroup,
-} from "react-bootstrap";
+import { Card, Button, Row, Col, Form, InputGroup } from "react-bootstrap";
 
 export class AddMember extends Component {
   constructor(props) {
